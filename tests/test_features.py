@@ -74,7 +74,7 @@ class FeatureHTTPTests(unittest.TestCase):
     def test_model_cancel_terminates_owned_child(self):
         process=Mock();process.poll.return_value=None
         worker=self.server.jobs
-        with patch('subprocess.Popen',return_value=process),patch.object(worker,'check',side_effect=Cancelled):
+        with patch.dict('sys.modules',{'faster_whisper':Mock()}),patch('subprocess.Popen',return_value=process),patch.object(worker,'check',side_effect=Cancelled):
             with self.assertRaises(Cancelled):worker.prepare_model({'service_account_key':self.scope,'id':'cancel-model'})
         process.terminate.assert_called_once();process.wait.assert_called_once()
 

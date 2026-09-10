@@ -2,7 +2,7 @@ name: Publish Linsi Lite
 on:
   push:
     branches: [main]
-    paths: [linsi/__init__.py, .github/workflows/release.yml]
+    paths: [linsi/**, static/**, scripts/**, tests/**, app.py, release-files.json, .github/workflows/release.yml]
   workflow_dispatch:
 permissions:
   contents: write
