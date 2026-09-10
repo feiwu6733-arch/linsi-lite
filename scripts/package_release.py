@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from linsi import VERSION
+from linsi.updates import RELEASES
 from scripts.validate_release import validate
 
 
@@ -32,6 +33,9 @@ def main():
         archive.writestr("MANIFEST.json", json.dumps(manifest, ensure_ascii=False, indent=2))
     digest = hashlib.sha256(target.read_bytes()).hexdigest()
     target.with_suffix(".zip.sha256").write_text(digest + "  " + target.name + "\n", encoding="utf-8")
+    if args.stable_name:
+        announcement={"tag_name":"v"+VERSION,"draft":False,"prerelease":False,"body":(ROOT/"RELEASE_NOTES.md").read_text(encoding="utf-8"),"assets":[{"name":target.name,"size":target.stat().st_size,"digest":"sha256:"+digest,"browser_download_url":RELEASES+"/download/v"+VERSION+"/"+target.name}]}
+        (destination/"update.json").write_text(json.dumps(announcement,ensure_ascii=False,indent=2),encoding="utf-8")
     print("发布包：" + str(target))
     print("SHA-256: " + digest)
 

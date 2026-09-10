@@ -113,6 +113,14 @@ class UpdateTests(unittest.TestCase):
             with patch('linsi.updates.urlopen',side_effect=error):u.check()
             self.assertEqual(u.public()['status'],status);self.assertFalse(u.busy)
 
+    def test_rate_limit_falls_back_to_repository_release_announcement(self):
+        u=Updates(self.root/'data','0.6.0')
+        limited=HTTPError('https://api.github.com',403,'rate limit',{},None)
+        with patch('linsi.updates.urlopen',side_effect=[limited,io.BytesIO(json.dumps(self.release()).encode())]) as request:
+            u.check()
+        self.assertEqual(u.public()['status'],'available');self.assertTrue(u.public()['download_ready'])
+        self.assertEqual(request.call_args.args[0].full_url,'https://github.com/feiwu6733-arch/linsi-lite/releases/latest/download/update.json')
+
     def test_ready_package_survives_restart(self):
         data=self.root/'data';directory=data/'updates';directory.mkdir(parents=True);_,digest=package(directory)
         (directory/'pending.json').write_text(json.dumps({'version':'0.6.1','sha256':digest}))

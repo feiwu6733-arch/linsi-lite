@@ -13,8 +13,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      LINSI_DATA_DIR: ${{ runner.temp }}/linsi-test-data
-      KNOWLEDGE_VAULT_DIR: ${{ runner.temp }}/linsi-test-vault
       PYTHONUTF8: '1'
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -22,6 +20,9 @@ jobs:
         with:
           python-version: '3.11'
       - name: Test and validate
+        env:
+          LINSI_DATA_DIR: ${{ runner.temp }}/linsi-test-data
+          KNOWLEDGE_VAULT_DIR: ${{ runner.temp }}/linsi-test-vault
         run: |
           python -m unittest discover -s tests -v
           for file in static/*.js; do node --check "$file"; done
@@ -36,4 +37,4 @@ jobs:
             exit 0
           fi
           python scripts/package_release.py --stable-name
-          gh release create "v$VERSION" "dist/linsi-lite-$VERSION.zip" "dist/linsi-lite-$VERSION.zip.sha256" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "灵思 Lite v$VERSION" --notes-file RELEASE_NOTES.md --latest
+          gh release create "v$VERSION" "dist/linsi-lite-$VERSION.zip" "dist/linsi-lite-$VERSION.zip.sha256" "dist/update.json" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "灵思 Lite v$VERSION" --notes-file RELEASE_NOTES.md --latest

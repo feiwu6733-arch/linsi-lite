@@ -122,9 +122,16 @@ class Updates:
     def check(self):
         try:
             request=Request(API,headers={'Accept':'application/vnd.github+json','User-Agent':'Linsi-Lite-Update','X-GitHub-Api-Version':'2022-11-28'})
-            with urlopen(request,timeout=15) as response:
-                raw=response.read(2*1024*1024+1)
-                if len(raw)>2*1024*1024:raise ValueError('版本信息过大')
+            def read_release(request):
+                with urlopen(request,timeout=15) as response:
+                    raw=response.read(2*1024*1024+1)
+                    if len(raw)>2*1024*1024:raise ValueError('版本信息过大')
+                    return raw
+            try:raw=read_release(request)
+            except OSError as error:
+                if isinstance(error,HTTPError) and error.code not in (403,429):raise
+                # Release-hosted metadata avoids the public REST API's shared IP quota.
+                raw=read_release(Request(RELEASES+'/latest/download/update.json',headers={'User-Agent':'Linsi-Lite-Update'}))
             release=json.loads(raw); tag=release['tag_name']; latest='.'.join(map(str,version(tag)))
             if release.get('draft') or release.get('prerelease'):raise ValueError('不是正式发布版本')
             url=RELEASES+'/tag/'+tag
