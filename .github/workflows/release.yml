@@ -1,0 +1,39 @@
+name: Publish Linsi Lite
+on:
+  push:
+    branches: [main]
+    paths: [linsi/__init__.py, .github/workflows/release.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: linsi-release
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      LINSI_DATA_DIR: ${{ runner.temp }}/linsi-test-data
+      KNOWLEDGE_VAULT_DIR: ${{ runner.temp }}/linsi-test-vault
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Test and validate
+        run: |
+          python -m unittest discover -s tests -v
+          for file in static/*.js; do node --check "$file"; done
+          python scripts/validate_release.py
+      - name: Publish version if new
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(python -c "from linsi import VERSION; print(VERSION)")
+          if gh release view "v$VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "This version is already published. Increase VERSION for the next release."
+            exit 0
+          fi
+          python scripts/package_release.py --stable-name
+          gh release create "v$VERSION" "dist/linsi-lite-$VERSION.zip" "dist/linsi-lite-$VERSION.zip.sha256" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "灵思 Lite v$VERSION" --notes-file RELEASE_NOTES.md --latest

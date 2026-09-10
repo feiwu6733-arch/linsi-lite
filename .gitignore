@@ -1,0 +1,13 @@
+.local/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+dist/
+artifacts/
+*.log
+.DS_Store
+.linsi-update.lock
+*.update-tmp

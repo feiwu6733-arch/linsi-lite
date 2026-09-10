@@ -1,0 +1,2 @@
+# 基础网页、数据库、报告和 Codex 交接仅使用 Python 标准库。
+# Python >= 3.11，无需 pip install。

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="灵思 Lite：本地对标账号研究，整理作品与文案，让每一份研究都有来源。">
+  <meta name="color-scheme" content="light">
+  <title>灵思 Lite · 对标研究开源版</title>
+  <link rel="icon" type="image/png" href="/icon.png">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+  <script src="/workbench.js" defer></script>
+  <script src="/studio.js" defer></script>
+  <script src="/research.js" defer></script>
+  <script src="/ai.js" defer></script>
+  <script src="/updates.js" defer></script>
+  <link rel="stylesheet" href="/research.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="mobile-appbar"><button id="menu-toggle" class="button secondary small" data-action="toggle-menu" aria-expanded="false" aria-controls="sidebar">菜单</button><strong id="mobile-page-label">工作台</strong><img src="/icon.png" alt="灵思"></div>
+  <button class="menu-backdrop" data-action="close-menu" aria-label="关闭导航"></button>
+  <aside class="sidebar" id="sidebar">
+    <a href="#home" class="brand"><img class="brand-image" src="/icon.png" alt=""><span>灵思 <span class="lite">开源版</span><small>本地对标研究工作台</small></span></a>
+    <div class="space-picker"><label for="space-select">当前工作台</label><select id="space-select"><option value="">选择工作台</option></select><button class="text-button" data-action="manage-workspaces">管理工作台</button></div>
+    <nav aria-label="主导航"><div class="nav-label">工作空间</div>
+      <a href="#home" data-nav="home" aria-label="开始研究 · 工作台"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span>工作台</a>
+      <a href="#mine" data-nav="mine" aria-label="我的账号 / 抖音连接"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg></span>我的账号</a>
+      <a href="#accounts" data-nav="accounts"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span>对标账号<span class="nav-count" id="account-count">0</span></a>
+      <a href="#batches" data-nav="batches"><span class="nav-icon" aria-hidden="true">◇</span>首次研究<span class="nav-count" id="batch-count">0</span></a>
+      <a href="#materials" data-nav="materials"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18H5zM8 7h8M8 12h8M8 17h5"/></svg></span>素材与文案<span class="nav-count" id="materials-count">0</span></a>
+      <a href="#reports" data-nav="reports"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18H5zM8 7h8M8 12h8M8 17h5"/></svg></span>研究报告<span class="nav-count" id="report-count">0</span></a>
+      <a href="#tasks" data-nav="tasks" aria-label="采集与转写 · 任务中心"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v16m-4-4 4 4 4-4M17 21V5m-4 4 4-4 4 4"/></svg></span>任务中心<span class="nav-count" id="task-count">0</span></a>
+      <div class="nav-divider"></div><div class="nav-label">更多体验</div>
+      <a href="#cloud" data-nav="cloud"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3h8v8M21 3 10 14M10 5H3v16h16v-7"/></svg></span>体验灵思云端<span class="tiny-pill">完整流程</span></a>
+      <a href="#settings" data-nav="settings"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"/></svg></span>使用与设置</a>
+    </nav>
+    <div class="sidebar-bottom"><span class="status-dot"></span>资料保存在本机<small>你的研究，随时可导出。</small><span class="version">LINSI LITE · v0.6.0</span></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="page-heading"><div class="page-crumbs"><span id="account-context">当前工作台</span><span>/</span><span id="breadcrumb">工作台</span></div><h1 id="page-title">工作台</h1><p id="page-description"></p></div><div class="top-controls"><button class="health-button" data-action="system-health"><span class="status-dot"></span><span id="connection-health">本地运行状态</span></button><div id="page-actions" class="actions"></div></div></header>
+    <div id="activity-strip" hidden></div>
+    <main id="main" tabindex="-1"><div class="loading" role="status">正在打开你的工作台…<progress class="task-progress" aria-label="正在加载工作台"></progress></div></main>
+    <footer>灵思 Lite · 让研究成为内容的起点 <span>本地研究 · 自由导出 · 按需体验云端</span></footer>
+  </div>
+  <dialog id="modal" aria-labelledby="modal-title"><div class="modal-heading"><h2 id="modal-title"></h2><button class="icon-button" data-action="close-modal" aria-label="关闭弹窗">×</button></div><div id="modal-body"></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
